@@ -1,0 +1,59 @@
+@{ ViewData["Title"] = "Home Page"; }
+@model List<WeddingModel>
+
+<div class="text-center">
+  <h1>Welcome to the Wedding Planner</h1>
+  <br>
+
+  <p><a asp-action="Create">
+    <button class="btn btn-primary">Create</button>
+  </a></p>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Wedding</th>
+        <th scope="col">Date</th>
+        <th scope="col">Guests</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var Wedding in @Model)
+      {
+      <tr>
+        <th scope="row">
+          <a asp-action="Info" asp-route-id="@Wedding.WeddingId">@Wedding.WedderOne & @Wedding.WedderTwo</a>
+        </th>
+        <td>@Wedding.Date.ToString("yyyy/MM/dd hh:mm tt")</td>
+        <td>@Wedding.Attendees.Count</td>
+        @if(@Wedding.IsCreator)
+        {
+          <td>
+            <a asp-action="DeleteWedding" asp-route-id="@Wedding.WeddingId" asp-controller="Home">
+              <button class="btn btn-danger">Delete</button>
+            </a>
+          </td>
+        }
+        else if(@Wedding.IsAttending)
+        {
+          <td>
+            <a asp-action="UnRsvp" asp-route-id="@Wedding.WeddingId" asp-controller="Home">
+              <button class="btn btn-danger">Un-RSVP</button>
+            </a>
+          </td>
+        }
+        else
+        {
+          <td>
+            <a asp-action="Rsvp" asp-route-id="@Wedding.WeddingId" asp-controller="Home">
+              <button class="btn btn-primary">RSVP</button>
+            </a>
+          </td>
+        }
+      </tr>
+      }
+    </tbody>
+  </table>
+
+</div>
